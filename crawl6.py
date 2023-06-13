@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 import time
 import io, base64
 import requests
@@ -64,28 +65,32 @@ while True:
         if src_path is None:
             continue
        
-        filename = f"{query}-{image_index}"
-        if src_path.startswith('https'):
-            try:
-                urlToJpg(src_path, f"images/{filename}.jpg")
-                print(f"URL 이미지 저장: {filename}")
-            except:
-                print(f"URL 이미지 저장 중 오류")
+        # filename = f"{query}-{image_index}"
+        # if src_path.startswith('https'):
+        #     try:
+        #         urlToJpg(src_path, f"images/{filename}.jpg")
+        #         print(f"URL 이미지 저장: {filename}")
+        #     except:
+        #         print(f"URL 이미지 저장 중 오류")
 
-        elif src_path.startswith("data:image/jpeg;base64"):
-            try:
-                base64ToJpg(src_path, f"images/{filename}.jpg")
-                print(f"base64 이미지 저장: {filename}")
-            except:
-                print(f"base64 이미지 저장 중 오류")
-        image_index += 1
+        # elif src_path.startswith("data:image/jpeg;base64"):
+        #     try:
+        #         base64ToJpg(src_path, f"images/{filename}.jpg")
+        #         print(f"base64 이미지 저장: {filename}")
+        #     except:
+        #         print(f"base64 이미지 저장 중 오류")
+        # image_index += 1
 
 
     # 아래로 스크롤
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(2)
-    new_height = driver.execute('return document.body.scrollHeight')
+    new_height = driver.execute_script('return document.body.scrollHeight')
     if new_height - last_height > 0:
         last_height = new_height
     else:
-        
+        try:   
+            more_btn = driver.find_element(By.CLASS_NAME, "mye4qd")
+            more_btn.click()
+        except :
+     
