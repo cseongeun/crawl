@@ -83,4 +83,9 @@ while True:
 
     # 아래로 스크롤
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    # scroll_down()
+    time.sleep(2)
+    new_height = driver.execute('return document.body.scrollHeight')
+    if new_height - last_height > 0:
+        last_height = new_height
+    else:
+        
