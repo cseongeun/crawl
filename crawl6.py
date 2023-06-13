@@ -21,7 +21,7 @@ def base64ToJpg(base64_str, filename):
 # url 데이터 -> JPG
 def urlToJpg(url, filename):
     response = requests.get(url)
-    image = Image.open(io.BytesIO(response.content()))
+    image = Image.open(io.BytesIO(response.content))
     # 이미지저장
     image.save(filename, 'JPEG')
 
@@ -59,13 +59,20 @@ while True:
         if src_path is None:
             continue
        
+        filename = f"{query}-{image_index}"
         if src_path.startswith('https'):
-            print("URL 이미지가 저장됨!")
-            urlToJpg(src_path, f"images/{query}-{image_index}.jpg")
-        elif src_path.startswith("data:image/jpeg;base64"):
-            print("Base64 이미지가 저장됨!")
-            base64ToJpg(src_path, f"images/{query}-{image_index}.jpg")
+            try:
+                urlToJpg(src_path, f"images/{filename}.jpg")
+                print(f"URL 이미지 저장: {filename}")
+            except:
+                print(f"URL 이미지 저장 중 오류")
 
+        elif src_path.startswith("data:image/jpeg;base64"):
+            try:
+                base64ToJpg(src_path, f"images/{filename}.jpg")
+                print(f"base64 이미지 저장: {filename}")
+            except:
+                print(f"base64 이미지 저장 중 오류")
         image_index += 1
 
 
