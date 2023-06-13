@@ -92,5 +92,6 @@ while True:
         try:   
             more_btn = driver.find_element(By.CLASS_NAME, "mye4qd")
             more_btn.click()
-        except :
+        except NoSuchElementException:
+            break
      
