@@ -6,10 +6,13 @@ import io, base64
 import requests
 from PIL import Image
 
-# 아래로 스크롤하기
-def scroll_down():
-    driver.execute_script("window.scrollTo(0, 5000)")
-    time.sleep(2)
+# # 아래로 스크롤하기
+# def scroll_down(height):
+#     driver.execute_script("window.scrollTo(0, 5000)")
+#     time.sleep(2)
+#     current_height = driver.execute_script('return document.body.scrollHeight;')
+#     if current_height - height > 0:
+#         return current_height
 
 # base64 데이터 -> JPG
 def base64ToJpg(base64_str, filename):
@@ -46,6 +49,8 @@ time.sleep(2)
 # 마지막 이미지 처리 인덱스
 last_index = 0 
 image_index = 0
+last_height = driver.execute_script('return document.body.scrollHeight')
+new_height = 0
 while True:
     # 이미지 모두 가져오기
     all_images = driver.find_elements(By.CLASS_NAME, "rg_i")
@@ -77,4 +82,5 @@ while True:
 
 
     # 아래로 스크롤
-    scroll_down()
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    # scroll_down()
