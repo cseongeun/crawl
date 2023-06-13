@@ -1,19 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementNotInteractableException
 import time
 import io, base64
 import requests
 from PIL import Image
-
-# # 아래로 스크롤하기
-# def scroll_down(height):
-#     driver.execute_script("window.scrollTo(0, 5000)")
-#     time.sleep(2)
-#     current_height = driver.execute_script('return document.body.scrollHeight;')
-#     if current_height - height > 0:
-#         return current_height
 
 # base64 데이터 -> JPG
 def base64ToJpg(base64_str, filename):
@@ -37,7 +29,7 @@ driver = webdriver.Chrome()
 driver.get(url)
 time.sleep(1)
 
-query = "고양이"
+query = "강아지"
 
 # 검색창 요소
 search_input = driver.find_element(By.ID, 'APjFqb')
@@ -65,21 +57,21 @@ while True:
         if src_path is None:
             continue
        
-        # filename = f"{query}-{image_index}"
-        # if src_path.startswith('https'):
-        #     try:
-        #         urlToJpg(src_path, f"images/{filename}.jpg")
-        #         print(f"URL 이미지 저장: {filename}")
-        #     except:
-        #         print(f"URL 이미지 저장 중 오류")
+        filename = f"{query}-{image_index}"
+        if src_path.startswith('https'):
+            try:
+                urlToJpg(src_path, f"images/{filename}.jpg")
+                print(f"URL 이미지 저장: {filename}")
+            except:
+                print(f"URL 이미지 저장 중 오류")
 
-        # elif src_path.startswith("data:image/jpeg;base64"):
-        #     try:
-        #         base64ToJpg(src_path, f"images/{filename}.jpg")
-        #         print(f"base64 이미지 저장: {filename}")
-        #     except:
-        #         print(f"base64 이미지 저장 중 오류")
-        # image_index += 1
+        elif src_path.startswith("data:image/jpeg;base64"):
+            try:
+                base64ToJpg(src_path, f"images/{filename}.jpg")
+                print(f"base64 이미지 저장: {filename}")
+            except:
+                print(f"base64 이미지 저장 중 오류")
+        image_index += 1
 
 
     # 아래로 스크롤
@@ -92,6 +84,6 @@ while True:
         try:   
             more_btn = driver.find_element(By.CLASS_NAME, "mye4qd")
             more_btn.click()
-        except NoSuchElementException:
+        except ElementNotInteractableException:
             break
      
